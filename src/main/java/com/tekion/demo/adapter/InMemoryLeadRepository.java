@@ -3,11 +3,13 @@ package com.tekion.demo.adapter;
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.lead.LeadState;
 import com.tekion.demo.port.LeadPersistencePort;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryLeadRepository implements LeadPersistencePort {
 
     private final Map<String, Map<String, Lead>> storage = new ConcurrentHashMap<>();
