@@ -40,6 +40,8 @@ public class LeadController {
                 .siteId(lead.getSiteId())
                 .firstName(lead.getFirstName())
                 .lastName(lead.getLastName())
+                .email(lead.getEmail())
+                .phone(lead.getPhone())
                 .source(lead.getSource())
                 .state(LeadState.NEW)
                 .vehicleInterest(lead.getVehicleInterest())
