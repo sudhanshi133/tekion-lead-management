@@ -2,19 +2,15 @@ package com.tekion.demo.controller;
 
 import com.tekion.demo.adapter.InMemoryLeadRepository;
 import com.tekion.demo.lead.Lead;
-import com.tekion.demo.lead.LeadSource;
 import com.tekion.demo.lead.LeadState;
-import com.tekion.demo.lead.valueObject.VehicleInterest;
 import com.tekion.demo.router.NotificationRouter;
-import com.tekion.demo.scoring.*;
-        import com.tekion.demo.adapter.EmailNotificationAdapter;
+import com.tekion.demo.adapter.EmailNotificationAdapter;
 import com.tekion.demo.adapter.SmsNotificationAdapter;
 import com.tekion.demo.notification.Notification;
 import com.tekion.demo.notification.NotificationType;
 import com.tekion.demo.scoring.rules.*;
 import org.springframework.web.bind.annotation.*;
 
-        import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;

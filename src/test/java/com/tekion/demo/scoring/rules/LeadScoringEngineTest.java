@@ -5,7 +5,6 @@ import com.tekion.demo.lead.Lead;
 import com.tekion.demo.lead.LeadSource;
 import com.tekion.demo.scoring.ScoringResult;
 import com.tekion.demo.scoring.ScoringRule;
-import com.tekion.demo.scoring.SourceQualityRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

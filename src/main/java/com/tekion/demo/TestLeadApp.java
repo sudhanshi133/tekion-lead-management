@@ -9,10 +9,9 @@ import com.tekion.demo.lead.LeadSource;
 import com.tekion.demo.lead.LeadState;
 import com.tekion.demo.lead.valueObject.VehicleInterest;
 import com.tekion.demo.router.NotificationRouter;
-import com.tekion.demo.scoring.SourceQualityRule;
+import com.tekion.demo.scoring.rules.SourceQualityRule;
 import com.tekion.demo.scoring.rules.*;
 
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;

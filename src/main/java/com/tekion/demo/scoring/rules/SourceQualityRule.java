@@ -1,6 +1,7 @@
-package com.tekion.demo.scoring;
+package com.tekion.demo.scoring.rules;
 
 import com.tekion.demo.lead.Lead;
+import com.tekion.demo.scoring.ScoringRule;
 
 public class SourceQualityRule implements ScoringRule {
 

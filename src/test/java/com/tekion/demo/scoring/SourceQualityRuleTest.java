@@ -3,6 +3,7 @@ package com.tekion.demo.scoring;
 import com.tekion.demo.TestDataBuilder;
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.lead.LeadSource;
+import com.tekion.demo.scoring.rules.SourceQualityRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
