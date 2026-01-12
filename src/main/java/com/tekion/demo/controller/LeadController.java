@@ -7,6 +7,7 @@ import com.tekion.demo.notification.NotificationType;
 import com.tekion.demo.port.LeadPersistencePort;
 import com.tekion.demo.port.NotificationPort;
 import com.tekion.demo.scoring.rules.LeadScoringEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
@@ -18,19 +19,14 @@ import java.util.UUID;
 @RequestMapping("/api/leads")
 public class LeadController {
 
-    private final LeadPersistencePort repository;
-    private final NotificationPort notificationRouter;
-    private final LeadScoringEngine scoringEngine;
+    @Autowired
+    private LeadPersistencePort repository;
 
-    public LeadController(
-            LeadPersistencePort repository,
-            NotificationPort notificationRouter,
-            LeadScoringEngine scoringEngine
-    ) {
-        this.repository = repository;
-        this.notificationRouter = notificationRouter;
-        this.scoringEngine = scoringEngine;
-    }
+    @Autowired
+    private NotificationPort notificationRouter;
+
+    @Autowired
+    private LeadScoringEngine scoringEngine;
 
     // Create a lead
     @PostMapping
