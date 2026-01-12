@@ -1,14 +1,12 @@
 package com.tekion.demo.controller;
 
-import com.tekion.demo.adapter.InMemoryLeadRepository;
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.lead.LeadState;
-import com.tekion.demo.router.NotificationRouter;
-import com.tekion.demo.adapter.EmailNotificationAdapter;
-import com.tekion.demo.adapter.SmsNotificationAdapter;
 import com.tekion.demo.notification.Notification;
 import com.tekion.demo.notification.NotificationType;
-import com.tekion.demo.scoring.rules.*;
+import com.tekion.demo.port.LeadPersistencePort;
+import com.tekion.demo.port.NotificationPort;
+import com.tekion.demo.scoring.rules.LeadScoringEngine;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
@@ -20,20 +18,19 @@ import java.util.UUID;
 @RequestMapping("/api/leads")
 public class LeadController {
 
-    private final InMemoryLeadRepository repo = new InMemoryLeadRepository();
+    private final LeadPersistencePort repository;
+    private final NotificationPort notificationRouter;
+    private final LeadScoringEngine scoringEngine;
 
-    private final NotificationRouter router = new NotificationRouter(List.of(
-            new EmailNotificationAdapter(),
-            new SmsNotificationAdapter()
-    ));
-
-    private final LeadScoringEngine scoringEngine = new LeadScoringEngine(List.of(
-            new SourceQualityRule(),
-            new VehicleAgeRule(),
-            new TradeInValueRule(),
-            new EngagementRule(),
-            new RecencyRule()
-    ));
+    public LeadController(
+            LeadPersistencePort repository,
+            NotificationPort notificationRouter,
+            LeadScoringEngine scoringEngine
+    ) {
+        this.repository = repository;
+        this.notificationRouter = notificationRouter;
+        this.scoringEngine = scoringEngine;
+    }
 
     // Create a lead
     @PostMapping
@@ -55,7 +52,7 @@ public class LeadController {
                 .build();
 
         // 2️⃣ Save
-        repo.save(lead);
+        repository.save(lead);
 
         // 3️⃣ Score
         var score = scoringEngine.score(lead);
@@ -67,7 +64,7 @@ public class LeadController {
                 .type(NotificationType.EMAIL)
                 .build();
 
-        var notificationResult = router.send(notification);
+        var notificationResult = notificationRouter.send(notification);
 
         return Map.of(
                 "lead", lead,
@@ -79,13 +76,13 @@ public class LeadController {
     // Get lead by ID
     @GetMapping("/{dealerId}/{leadId}")
     public Lead getLead(@PathVariable String dealerId, @PathVariable String leadId) {
-        return repo.findByIdAndDealerId(leadId, dealerId)
+        return repository.findByIdAndDealerId(leadId, dealerId)
                 .orElseThrow(() -> new RuntimeException("Lead not found"));
     }
 
     // List leads by dealer
     @GetMapping("/dealer/{dealerId}")
     public List<Lead> listLeads(@PathVariable String dealerId) {
-        return repo.findByDealerIdOrderByScore(dealerId, 100);
+        return repository.findByDealerIdOrderByScore(dealerId, 100);
     }
 }

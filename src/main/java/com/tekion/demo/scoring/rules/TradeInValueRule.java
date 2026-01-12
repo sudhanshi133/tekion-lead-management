@@ -2,7 +2,9 @@ package com.tekion.demo.scoring.rules;
 
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.scoring.ScoringRule;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TradeInValueRule implements ScoringRule {
 
     @Override

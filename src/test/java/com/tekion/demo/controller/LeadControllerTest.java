@@ -3,22 +3,20 @@ package com.tekion.demo.controller;
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.lead.LeadSource;
 import com.tekion.demo.lead.valueObject.VehicleInterest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class LeadControllerTest {
 
+    @Autowired
     private LeadController controller;
-
-    @BeforeEach
-    void setUp() {
-        controller = new LeadController();
-    }
 
     @Test
     void shouldCreateLeadSuccessfully() {

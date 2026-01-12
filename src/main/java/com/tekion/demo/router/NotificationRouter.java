@@ -3,13 +3,13 @@ package com.tekion.demo.router;
 import com.tekion.demo.notification.Notification;
 import com.tekion.demo.notification.NotificationResult;
 import com.tekion.demo.port.NotificationPort;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 
-public class NotificationRouter {
+@Component
+public class NotificationRouter implements NotificationPort {
 
     private final List<NotificationPort> adapters;
 
@@ -21,6 +21,13 @@ public class NotificationRouter {
         this.adapters = adapters;
     }
 
+    @Override
+    public boolean supports(com.tekion.demo.notification.NotificationType type) {
+        // Router supports all types by delegating to adapters
+        return true;
+    }
+
+    @Override
     public NotificationResult send(Notification notification) {
         String leadId = notification.getRecipient();
         LocalDate today = LocalDate.now();

@@ -2,10 +2,12 @@ package com.tekion.demo.scoring.rules;
 
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.scoring.ScoringRule;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.ZoneId;
 
+@Component
 public class VehicleAgeRule implements ScoringRule {
 
     @Override

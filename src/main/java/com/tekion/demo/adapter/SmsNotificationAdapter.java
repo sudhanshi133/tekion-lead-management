@@ -4,7 +4,9 @@ import com.tekion.demo.notification.Notification;
 import com.tekion.demo.notification.NotificationResult;
 import com.tekion.demo.notification.NotificationType;
 import com.tekion.demo.port.NotificationPort;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SmsNotificationAdapter implements NotificationPort {
 
     @Override
