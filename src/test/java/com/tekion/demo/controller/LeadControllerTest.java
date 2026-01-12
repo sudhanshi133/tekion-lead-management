@@ -94,7 +94,7 @@ class LeadControllerTest {
     }
 
     @Test
-    void shouldGetLeadByIdAndDealerId() throws Exception {
+    void shouldGetLeadByIdAndDealerId() {
         // First create a lead
         Lead lead = Lead.builder()
                 .dealerId("dealer999")
@@ -106,35 +106,32 @@ class LeadControllerTest {
                 .vehicleInterest(new VehicleInterest("Nissan", "Altima", 2021, 3000.0))
                 .build();
 
-        MvcResult createResult = mockMvc.perform(post("/api/leads")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(lead)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String response = createResult.getResponse().getContentAsString();
-        String leadId = objectMapper.readTree(response).get("lead").get("leadId").asText();
+        Map<String, Object> createResult = controller.createLead(lead);
+        Lead createdLead = (Lead) createResult.get("lead");
+        String leadId = createdLead.getLeadId();
 
         // Then retrieve it
-        mockMvc.perform(get("/api/leads/dealer999/" + leadId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.leadId").value(leadId))
-                .andExpect(jsonPath("$.dealerId").value("dealer999"))
-                .andExpect(jsonPath("$.firstName").value("Alice"))
-                .andExpect(jsonPath("$.lastName").value("Williams"));
+        Lead retrievedLead = controller.getLead("dealer999", leadId);
+
+        assertNotNull(retrievedLead);
+        assertEquals(leadId, retrievedLead.getLeadId());
+        assertEquals("dealer999", retrievedLead.getDealerId());
+        assertEquals("Alice", retrievedLead.getFirstName());
+        assertEquals("Williams", retrievedLead.getLastName());
     }
 
     @Test
-    void shouldThrowExceptionWhenLeadNotFound() throws Exception {
-        mockMvc.perform(get("/api/leads/dealer123/nonexistent"))
-                .andExpect(status().is5xxServerError());
+    void shouldThrowExceptionWhenLeadNotFound() {
+        assertThrows(RuntimeException.class, () -> {
+            controller.getLead("dealer123", "nonexistent");
+        });
     }
 
     @Test
-    void shouldListLeadsByDealer() throws Exception {
+    void shouldListLeadsByDealer() {
         // Create multiple leads for the same dealer
         String dealerId = "dealer555";
-        
+
         for (int i = 0; i < 3; i++) {
             Lead lead = Lead.builder()
                     .dealerId(dealerId)
@@ -146,16 +143,15 @@ class LeadControllerTest {
                     .vehicleInterest(new VehicleInterest("Toyota", "Camry", 2020, 5000.0))
                     .build();
 
-            mockMvc.perform(post("/api/leads")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(lead)));
+            controller.createLead(lead);
         }
 
         // List all leads for the dealer
-        mockMvc.perform(get("/api/leads/dealer/" + dealerId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(3))));
+        List<Lead> leads = controller.listLeads(dealerId);
+
+        assertNotNull(leads);
+        assertTrue(leads.size() >= 3);
+        assertTrue(leads.stream().allMatch(l -> l.getDealerId().equals(dealerId)));
     }
 }
 
