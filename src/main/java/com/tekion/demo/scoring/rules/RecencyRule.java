@@ -2,10 +2,12 @@ package com.tekion.demo.scoring.rules;
 
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.scoring.ScoringRule;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
 
+@Component
 public class RecencyRule implements ScoringRule {
 
     @Override

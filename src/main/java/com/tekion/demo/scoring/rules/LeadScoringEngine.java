@@ -3,11 +3,13 @@ package com.tekion.demo.scoring.rules;
 import com.tekion.demo.lead.Lead;
 import com.tekion.demo.scoring.ScoringResult;
 import com.tekion.demo.scoring.ScoringRule;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class LeadScoringEngine {
 
     private final List<ScoringRule> rules;
