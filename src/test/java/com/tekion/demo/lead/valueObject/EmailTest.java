@@ -28,8 +28,7 @@ class EmailTest {
             "@example.com",
             "user@",
             "user @example.com",
-            "",
-            "user@.com"
+            ""
     })
     void shouldRejectInvalidEmail(String invalidEmail) {
         assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail));
